@@ -10,33 +10,92 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AsesoriaRouteImport } from './routes/asesoria'
+import { Route as CalculadoraRouteImport } from './routes/calculadora'
+import { Route as ComparadorRouteImport } from './routes/comparador'
+import { Route as CotizadorRouteImport } from './routes/cotizador'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AsesoriaRoute = AsesoriaRouteImport.update({
+  id: '/asesoria',
+  path: '/asesoria',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalculadoraRoute = CalculadoraRouteImport.update({
+  id: '/calculadora',
+  path: '/calculadora',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComparadorRoute = ComparadorRouteImport.update({
+  id: '/comparador',
+  path: '/comparador',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CotizadorRoute = CotizadorRouteImport.update({
+  id: '/cotizador',
+  path: '/cotizador',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/asesoria': typeof AsesoriaRoute
+  '/calculadora': typeof CalculadoraRoute
+  '/comparador': typeof ComparadorRoute
+  '/cotizador': typeof CotizadorRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/asesoria': typeof AsesoriaRoute
+  '/calculadora': typeof CalculadoraRoute
+  '/comparador': typeof ComparadorRoute
+  '/cotizador': typeof CotizadorRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/asesoria': typeof AsesoriaRoute
+  '/calculadora': typeof CalculadoraRoute
+  '/comparador': typeof ComparadorRoute
+  '/cotizador': typeof CotizadorRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    '/' | '/admin' | '/asesoria' | '/calculadora' | '/comparador' | '/cotizador'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    '/' | '/admin' | '/asesoria' | '/calculadora' | '/comparador' | '/cotizador'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/asesoria'
+    | '/calculadora'
+    | '/comparador'
+    | '/cotizador'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
+  AsesoriaRoute: typeof AsesoriaRoute
+  CalculadoraRoute: typeof CalculadoraRoute
+  ComparadorRoute: typeof ComparadorRoute
+  CotizadorRoute: typeof CotizadorRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +107,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/asesoria': {
+      id: '/asesoria'
+      path: '/asesoria'
+      fullPath: '/asesoria'
+      preLoaderRoute: typeof AsesoriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calculadora': {
+      id: '/calculadora'
+      path: '/calculadora'
+      fullPath: '/calculadora'
+      preLoaderRoute: typeof CalculadoraRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/comparador': {
+      id: '/comparador'
+      path: '/comparador'
+      fullPath: '/comparador'
+      preLoaderRoute: typeof ComparadorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cotizador': {
+      id: '/cotizador'
+      path: '/cotizador'
+      fullPath: '/cotizador'
+      preLoaderRoute: typeof CotizadorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
+  AsesoriaRoute: AsesoriaRoute,
+  CalculadoraRoute: CalculadoraRoute,
+  ComparadorRoute: ComparadorRoute,
+  CotizadorRoute: CotizadorRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

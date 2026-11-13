@@ -11,6 +11,8 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import { HealthProvider } from '@/components/health/context';
+import { HealthShell } from '@/components/health/shell';
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -81,16 +83,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "ComparaSalud — Planes de salud en Chile" },
+      { name: "description", content: "Compara planes de salud y encuentra alternativas para tu familia en Chile." },
+      { name: "author", content: "ComparaSalud" },
+      { property: "og:title", content: "ComparaSalud — Planes de salud en Chile" },
+      { property: "og:description", content: "Compara planes de salud para tu familia en Chile." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap' },
       {
         rel: "stylesheet",
         href: appCss,
@@ -106,7 +108,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="es-CL">
       <head>
         <HeadContent />
       </head>
@@ -124,7 +126,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <HealthProvider><HealthShell><Outlet /></HealthShell></HealthProvider>
     </QueryClientProvider>
   );
 }
