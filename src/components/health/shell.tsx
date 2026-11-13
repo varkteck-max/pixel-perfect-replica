@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { useHealth } from './context';
 import { AdvisorDialog } from './advisor';
-export function Brand() { return <Link to="/" className="brand"><span className="brand-mark"><ShieldPlus className="size-23"/></span><span>Compara<span className="text-primary">Salud</span><span className="text-success">.</span></span></Link>; }
+export function Brand() { return <Link to="/" className="brand"><span className="brand-mark"><ShieldPlus className="size-6"/></span><span>Compara<span className="text-primary">Salud</span><span className="text-success">.</span></span></Link>; }
 export function HealthShell({ children }: { children: ReactNode }) {
  const path = useLocation().pathname; const [mobile, setMobile] = useState(false); const { setAdvisorOpen } = useHealth();
  const links = [{ to: '/', label: 'Inicio' }, { to: '/cotizador', label: 'Cotiza tu plan' }, { to: '/comparador', label: 'Comparar Isapres' }, { to: '/calculadora', label: 'Calculadora 7%' }] as const;
