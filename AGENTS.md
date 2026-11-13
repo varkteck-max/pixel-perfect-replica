@@ -28,3 +28,9 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Application architecture
+- Keep quote and comparison selections in a shared React provider across content routes; no personal quotation inputs are persisted until advisory consent.
+- Keep illustrative pricing math and validation in a browser-safe domain module with concrete unit tests; never present the illustrative factor or UF as official current values.
+- Store advisory requests only through a validated server function with a privileged insert; do not expose real leads in the public demonstration dashboard.
+- Use the public admin route only for fictional demonstration rows; real administrative access must be authenticated and role-authorized before it is added.

@@ -1,0 +1,14 @@
+import { Link, useLocation } from '@tanstack/react-router';
+import { ShieldPlus, Headset, ArrowUpRight, Menu, X, ShieldCheck } from 'lucide-react';
+import { useState, type ReactNode } from 'react';
+import { Button } from '@/components/ui/button';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { useHealth } from './context';
+import { AdvisorDialog } from './advisor';
+export function Brand() { return <Link to="/" className="brand"><span className="brand-mark"><ShieldPlus className="size-6"/></span><span>Compara<span className="text-primary">Salud</span><span className="text-success">.</span></span></Link>; }
+export function HealthShell({ children }: { children: ReactNode }) {
+ const path = useLocation().pathname; const [mobile, setMobile] = useState(false); const { setAdvisorOpen } = useHealth();
+ const links = [{ to: '/', label: 'Inicio' }, { to: '/cotizador', label: 'Cotiza tu plan' }, { to: '/comparador', label: 'Comparar Isapres' }, { to: '/calculadora', label: 'Calculadora 7%' }] as const;
+ return <TooltipProvider delayDuration={150}><header className="site-header"><div className="page-width flex items-center justify-between gap-6 min-h-20"><Brand/><nav className="hidden md:flex items-center gap-7">{links.map(l => <Link key={l.to} to={l.to} className={`nav-link ${path === l.to ? 'active' : ''}`}>{l.label}</Link>)}</nav><Button variant="outline" className="hidden lg:flex text-xs h-10" onClick={() => setAdvisorOpen(true)}><Headset/>Habla con un experto<ArrowUpRight/></Button><Button variant="ghost" size="icon" className="md:hidden" aria-label={mobile ? 'Cerrar menú' : 'Abrir menú'} onClick={() => setMobile(!mobile)}>{mobile ? <X/> : <Menu/>}</Button></div>{mobile && <nav className="page-width flex flex-wrap gap-x-6 pb-3 md:hidden">{links.map(l => <Link key={l.to} to={l.to} onClick={() => setMobile(false)} className={`nav-link ${path === l.to ? 'active' : ''}`}>{l.label}</Link>)}</nav>}</header>
+ {children}<footer className="footer"><div className="page-width flex flex-wrap items-center justify-between gap-6"><div><Brand/><p className="text-xs text-muted-foreground mt-3">Decisiones informadas. Salud mejor protegida.</p></div><div className="text-xs text-muted-foreground max-w-md leading-relaxed">Planes y precios ilustrativos, no ofertas de las Isapres. UF referencial: $40.000, editable en la calculadora. Verifica condiciones, topes y valores oficiales antes de contratar.</div><Link to="/admin" className="text-xs text-muted-foreground flex items-center gap-1"><ShieldCheck className="size-3"/>Panel demo</Link></div></footer><AdvisorDialog/><Button variant="success" className="fixed bottom-5 right-5 z-30 h-12 shadow-lg" onClick={() => setAdvisorOpen(true)}><Headset/><span className="hidden sm:inline">¿Te ayudamos?</span></Button></TooltipProvider>;
+}

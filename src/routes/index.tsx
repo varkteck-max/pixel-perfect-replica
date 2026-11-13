@@ -1,23 +1,19 @@
-import { createFileRoute } from "@tanstack/react-router";
-
-// The home route ships no og:image, so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
-export const Route = createFileRoute("/")({
-  component: Index,
-});
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
+import { ShieldCheck, ArrowRight, Check, SlidersHorizontal, HeartPulse, Wallet, Sparkles, LockKeyhole, Clock3, ChevronRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Field, SelectField } from '@/components/health/fields';
+import { PlanCard } from '@/components/health/plan-card';
+import { useHealth } from '@/components/health/context';
+import { plans, insurers, pageHead, quoteSchema } from '@/lib/health-plans';
+import familyPhoto from '@/assets/family-health.jpg';
+import { useState } from 'react';
+export const Route = createFileRoute('/')({ head: () => pageHead('Encuentra tu mejor plan de salud', 'Compara planes referenciales de Isapres en Chile, calcula tu 7% y solicita asesoría personalizada.'), component: Index });
 function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
+ const { quote, setQuote, setAdvisorOpen } = useHealth(); const navigate = useNavigate(); const [error, setError] = useState('');
+ return <main><section className="hero"><img className="hero-photo" src={familyPhoto} alt="Una familia disfrutando un paseo en Santiago" width={1600} height={912}/><div className="hero-shade"/><div className="page-width hero-copy"><span className="eyebrow hero-eyebrow"><ShieldCheck className="size-3.5"/>Tu salud, tu mejor decisión</span><h1>Tu mejor plan de salud.<br/><span>Más cobertura, menos costo.</span></h1><p>Compara Isapres y descubre un plan que se adapte<br className="hidden sm:block"/> a tu vida, tu familia y tu presupuesto.</p><div className="flex flex-wrap gap-6 mt-7 text-xs font-medium"><span className="flex gap-2 items-center"><Check className="size-4 text-success"/>Asesoría sin costo</span><span className="flex gap-2 items-center"><Check className="size-4 text-success"/>Sin compromiso</span><span className="flex gap-2 items-center"><Check className="size-4 text-success"/>En un solo lugar</span></div></div></section>
+ <div className="page-width"><form className="quick-quote" onSubmit={e => { e.preventDefault(); const parsed = quoteSchema.safeParse(quote); if (!parsed.success) { setError('Revisa tu renta, edad y número de cargas.'); return; } setError(''); navigate({ to: '/cotizador' }); }}><div className="flex flex-wrap items-center justify-between gap-3 mb-5"><h2 className="font-bold text-[17px]">Empieza por ti. Encuentra tu plan ideal.</h2><span className="text-[11px] text-muted-foreground flex gap-1.5 items-center"><Clock3 className="size-3.5"/>Solo te tomará unos minutos</span></div><div className="grid md:grid-cols-[1.25fr_.75fr_1fr_.6fr_1.4fr] sm:grid-cols-2 gap-4 items-end"><Field label="Renta imponible mensual" type="number" min={100000} max={50000000} value={quote.income} onChange={e => setQuote({ ...quote, income: Number(e.target.value) })} help="La cotización legal referencial corresponde al 7% de tu renta imponible."/><SelectField label="Cargas familiares" value={quote.dependents} onChange={e => setQuote({ ...quote, dependents: Number(e.target.value) })}>{Array.from({ length: 11 }, (_, n) => <option value={n} key={n}>{n === 0 ? 'Sin cargas' : `${n} carga${n > 1 ? 's' : ''}`}</option>)}</SelectField><SelectField label="Isapre actual" value={quote.current} onChange={e => setQuote({ ...quote, current: e.target.value })}><option>No tengo Isapre</option>{insurers.map(i => <option key={i}>{i}</option>)}<option>Fonasa</option></SelectField><Field label="Tu edad" type="number" min={18} max={100} value={quote.age} onChange={e => setQuote({ ...quote, age: Number(e.target.value) })}/><Button className="h-[46px] text-xs transition-transform hover:-translate-y-0.5" type="submit">Cotizar y comparar planes<ArrowRight/></Button></div>{error && <p role="alert" className="text-destructive text-xs mt-3">{error}</p>}<p className="text-[10px] text-muted-foreground flex items-center gap-1.5 mt-4"><LockKeyhole className="size-3"/>Tus datos son privados. No necesitas registrarte para comparar.</p></form>
+ <section className="py-10 border-b border-border"><p className="text-center text-[11px] text-muted-foreground mb-6">EXPLORA OPCIONES DE LAS PRINCIPALES ISAPRES DE CHILE</p><div className="flex items-center justify-between flex-wrap gap-x-8 gap-y-5">{insurers.map(i => <span key={i} className="insurer">{i === 'Cruz Blanca' ? '✚ Cruz Blanca' : i === 'Nueva Masvida' ? 'nueva masvida' : i}</span>)}</div></section>
+ <section className="py-14"><div className="text-center"><span className="eyebrow text-primary">Más claridad. Menos vueltas.</span><h2 className="section-title mt-3">Elegir bien se siente mejor.</h2><p className="section-caption mt-3">Todo lo que necesitas para tomar una decisión con confianza.</p></div><div className="grid md:grid-cols-3 gap-10 mt-10">{[{ icon: SlidersHorizontal, title: 'Compara sin complicaciones', text: 'Coberturas, clínicas y precios. Todas tus opciones frente a frente, sin letra chica.' }, { icon: Wallet, title: 'Haz que tu 7% rinda más', text: 'Conoce tu cotización y estima si tu nuevo plan genera saldo a favor o un pago adicional.' }, { icon: HeartPulse, title: 'Acompañamiento de verdad', text: 'Un experto te ayuda a entender tus alternativas y elegir lo que realmente necesitas.' }].map(f => <div key={f.title} className="flex gap-4"><span className="feature-icon shrink-0"><f.icon className="size-5"/></span><div><h3 className="font-bold text-sm mt-1">{f.title}</h3><p className="section-caption text-xs mt-2">{f.text}</p></div></div>)}</div></section></div>
+ <section className="bg-secondary/50 border-y border-border py-12"><div className="page-width"><div className="flex flex-wrap items-end justify-between gap-5"><div><span className="eyebrow text-primary"><Sparkles className="size-3.5"/>Un plan para cada etapa</span><h2 className="section-title mt-3">Encuentra tu próximo plan.</h2><p className="section-caption mt-2">Una primera mirada a tus opciones. Precios referenciales para tus datos.</p></div><Button variant="link" asChild><Link to="/cotizador">Ver todos los planes<ArrowRight/></Link></Button></div><div className="grid md:grid-cols-3 gap-5 mt-7">{plans.slice(0, 3).map(plan => <PlanCard key={plan.id} plan={plan}/>)}</div><p className="text-[11px] text-muted-foreground mt-5 flex items-center gap-2"><ShieldCheck className="size-3.5"/>Simulación ilustrativa. Coberturas sujetas a red, aranceles y topes del contrato oficial.</p></div></section>
+ <section className="page-width py-14 flex flex-wrap items-center justify-between gap-8"><div><span className="eyebrow text-success">No tienes que decidir solo</span><h2 className="section-title mt-3">Tu tranquilidad empieza con una conversación.</h2><p className="section-caption mt-3">Resuelve tus dudas con una asesoría personalizada, sin costo ni compromiso.</p></div><Button variant="success" className="h-12" onClick={() => setAdvisorOpen(true)}>Habla con un experto<ChevronRight/></Button></section></main>;
 }
