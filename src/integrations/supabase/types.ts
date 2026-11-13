@@ -14,7 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      advisory_requests: {
+        Row: {
+          consent: boolean
+          contact_time: string
+          created_at: string
+          current_isapre: string
+          email: string
+          id: string
+          income: number
+          interested_isapre: string
+          name: string
+          phone: string
+          status: string
+        }
+        Insert: {
+          consent: boolean
+          contact_time: string
+          created_at?: string
+          current_isapre: string
+          email: string
+          id?: string
+          income?: number
+          interested_isapre?: string
+          name: string
+          phone: string
+          status?: string
+        }
+        Update: {
+          consent?: boolean
+          contact_time?: string
+          created_at?: string
+          current_isapre?: string
+          email?: string
+          id?: string
+          income?: number
+          interested_isapre?: string
+          name?: string
+          phone?: string
+          status?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
